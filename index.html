@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Game - C4 Documentation</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="assets/js/mermaid-init.js"></script>
+</head>
+<body>
+    <h1>Art Game - Архитектура системы (Уровень C4)</h1>
+    <p>Образовательная мобильная игра в сфере искусства</p>
+    
+    <div class="description">
+        <h2>Диаграмма контекста (Уровень 1)</h2>
+        <p>Этот уровень показывает систему в контексте ее пользователей и внешних систем. Предназначен для бизнес-пользователей и технических специалистов для общего понимания.</p>
+    </div>
+    
+    <div class="mermaid">
+graph TD
+    %% Стили для C4
+    classDef person fill:#99c1f1,stroke:#1a5fb4,stroke-width:2px
+    classDef system fill:#1a5fb4,stroke:#0d3c7d,stroke-width:2px,color:white
+    classDef external fill:#e5a50a,stroke:#b57614,stroke-width:2px
+    
+    %% Элементы
+    USER[Пользователь<br/>мобильного приложения]:::person
+    SYSTEM[Art Game System<br/>Образовательная платформа]:::system
+    AUTH[Система аутентификации<br/>OAuth 2.0]:::external
+    STORAGE[Хранилище медиа<br/>Cloud Storage]:::external
+    ANALYTICS[Система аналитики<br/>Google Analytics]:::external
+    
+    %% Связи
+    USER -->|Взаимодействует через<br/>мобильное приложение| SYSTEM
+    SYSTEM -->|Аутентификация<br/>пользователей| AUTH
+    SYSTEM -->|Хранение медиа<br/>артефактов| STORAGE
+    SYSTEM -->|Отправка данных<br/>для аналитики| ANALYTICS
+    
+    %% Клик для перехода к контейнерам
+    click SYSTEM "containers/backend.html" _self
+    click AUTH "https://oauth.example.com" _blank
+    click STORAGE "https://storage.example.com" _blank
+    click ANALYTICS "https://analytics.example.com" _blank
+    </div>
+    
+    <div class="navigation-buttons">
+        <a href="containers/backend.html" class="nav-btn">🔍 Посмотреть детали системы</a>
+        <a href="detailed/activity-diagram.html" class="nav-btn">Посмотреть диаграмму активности</a>
+        <a href="detailed/sequence-diagram.html" class="nav-btn">Посмотреть sequence diagram</a>
+    </div>
+    
+    <div class="description">
+        <h2>Описание уровня контекста</h2>
+        <p>На этом уровне показаны основные участники и внешние системы, с которыми взаимодействует Art Game. Это самая высокоуровневая диаграмма, понятная как техническим специалистам, так и бизнес-пользователям.</p>
+        <p><strong>Пользователь</strong> - игрок мобильного приложения, который проходит обучение искусству через игровые механики.</p>
+        <p><strong>Art Game System</strong> - основная система, содержащая все функциональности образовательной игры.</p>
+        <p><strong>Внешние системы</strong> обеспечивают аутентификацию, хранение медиа и сбор аналитики.</p>
+    </div>
+    
+    
+</body>
+</html>
