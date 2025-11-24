@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Game - ER Diagram</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="../assets/js/mermaid-init.js"></script>
+</head>
+<body>
+    <h1> Art Game - ER Diagram: База данных</h1>
+    
+    <div class="description">
+        <h2>Entity-Relationship Diagram</h2>
+        <p>Эта диаграмма показывает структуру базы данных системы, включая сущности, их атрибуты и отношения между ними.</p>
+    </div>
+    
+    <div class="mermaid">
+erDiagram
+    USER ||--|| PROFILE : has
+    USER {
+        int user_id PK
+        string username
+        string email
+        string password_hash
+        datetime registration_date
+    }
+    
+    PROFILE {
+        int profile_id PK
+        int user_id FK
+        string full_name
+        string avatar_url
+        int total_points
+        int current_level
+    }
+    
+    COURSE ||--o{ LESSON : contains
+    COURSE {
+        int course_id PK
+        string title
+        string description
+        string art_style
+        string difficulty_level
+        datetime created_at
+    }
+    
+    LESSON ||--o{ EXERCISE : includes
+    LESSON {
+        int lesson_id PK
+        int course_id FK
+        string title
+        string description
+        int order_number
+        datetime created_at
+    }
+    
+    EXERCISE ||--|| PROGRESS : tracked
+    EXERCISE {
+        int exercise_id PK
+        int lesson_id FK
+        string type
+        string instruction
+        json content_data
+        int points_value
+        datetime created_at
+    }
+    
+    PROGRESS {
+        int progress_id PK
+        int user_id FK
+        int exercise_id FK
+        int attempts
+        boolean completed
+        datetime completed_at
+        int points_earned
+    }
+    
+    ACHIEVEMENT {
+        int achievement_id PK
+        string title
+        string description
+        int points_required
+        string badge_url
+    }
+    
+    USER ||--o{ USER_ACHIEVEMENT : earns
+    USER_ACHIEVEMENT {
+        int user_id FK
+        int achievement_id FK
+        datetime earned_at
+    }
+    
+    USER ||--o{ PROGRESS : has
+    </div>
+    
+    <div class="navigation-buttons">
+        <a href="../components/user-module.html" class="nav-btn">Вернуться к компонентам</a>
+        <a href="../detailed/activity-diagram.html" class="nav-btn"> Посмотреть диаграмму активности</a>
+        <a href="../index.html" class="nav-btn nav-btn-secondary">Вернуться на главную</a>
+    </div>
+    
+    <div class="description">
+        <h2>Описание ER-диаграммы</h2>
+        <p>Эта диаграмма показывает полную структуру базы данных образовательной игры:</p>
+        <ul>
+            <li><strong>USER и PROFILE</strong> - информация о пользователях и их профилях</li>
+            <li><strong>COURSE и LESSON</strong> - образовательные курсы и уроки по искусству</li>
+            <li><strong>EXERCISE</strong> - упражнения внутри уроков (викторины, задания)</li>
+            <li><strong>PROGRESS</strong> - прогресс пользователей по упражнениям</li>
+            <li><strong>ACHIEVEMENT</strong> - система достижений и наград</li>
+        </ul>
+        <p>ER-диаграмма помогает разработчикам понимать структуру данных и отношения между сущностями.</p>
+    </div>
+    
+    
+</body>
+</html>

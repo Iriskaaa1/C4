@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Game - Deployment Diagram</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="../assets/js/mermaid-init.js"></script>
+</head>
+<body>
+    <h1> Art Game - Deployment Diagram</h1>
+    
+    <div class="description">
+        <h2>Deployment Diagram - Развертывание системы</h2>
+        <p>Эта диаграмма показывает физическое развертывание компонентов системы на серверах и в облаке.</p>
+    </div>
+    
+    <div class="mermaid">
+graph TD
+    %% Стили
+    classDef cloud fill:#3498db,stroke:#2980b9,color:white
+    classDef server fill:#9b59b6,stroke:#8e44ad,color:white
+    classDef db fill:#e74c3c,stroke:#c0392b,color:white
+    classDef mobile fill:#2ecc71,stroke:#27ae60,color:white
+    classDef cdn fill:#f39c12,stroke:#d35400,color:white
+    
+    %% Компоненты
+    MOBILE[📱 Мобильное приложение<br/>iOS/Android]:::mobile
+    CDN[🌐 CDN<br/>Cloudflare]:::cdn
+    WEB_SERVER[🖥️ Web Server<br/>Nginx]:::server
+    APP_SERVER[⚙️ Application Server<br/>Docker/Kubernetes]:::server
+    DATABASE[🗃️ Database Server<br/>PostgreSQL Cluster]:::db
+    STORAGE[💾 Cloud Storage<br/>AWS S3]:::cloud
+    CACHE[⚡ Cache Server<br/>Redis]:::server
+    
+    %% Связи
+    MOBILE -->|HTTPS| CDN
+    CDN -->|HTTPS| WEB_SERVER
+    WEB_SERVER -->|HTTP| APP_SERVER
+    APP_SERVER -->|SQL| DATABASE
+    APP_SERVER -->|API| STORAGE
+    APP_SERVER -->|Redis Protocol| CACHE
+    
+    %% Группы
+    subgraph "Cloud Infrastructure"
+        CDN
+        WEB_SERVER
+        APP_SERVER
+        DATABASE
+        STORAGE
+        CACHE
+    end
+    
+    subgraph "Client Side"
+        MOBILE
+    end
+    </div>
+    
+    <div class="navigation-buttons">
+        <a href="../containers/backend.html" class="nav-btn">🔙 Вернуться к контейнерам</a>
+        <a href="../index.html" class="nav-btn">Домашняя страница</a>
+        <a href="../detailed/class-diagram.html" class="nav-btn nav-btn-secondary">CppClass Посмотреть классы</a>
+    </div>
+    
+    <div class="description">
+        <h2>Описание deployment diagram</h2>
+        <p>Эта диаграмма показывает, как компоненты системы развернуты в физической инфраструктуре:</p>
+        <ul>
+            <li><strong>Мобильные клиенты</strong> - приложения на iOS и Android</li>
+            <li><strong>CDN</strong> - распределение контента для быстрой загрузки</li>
+            <li><strong>Web Server</strong> - Nginx для статического контента и балансировки</li>
+            <li><strong>Application Server</strong> - Docker контейнеры в Kubernetes кластере</li>
+            <li><strong>Database</strong> - PostgreSQL кластер с репликацией</li>
+            <li><strong>Storage</strong> - AWS S3 для хранения медиа-файлов</li>
+            <li><strong>Cache</strong> - Redis для кэширования часто запрашиваемых данных</li>
+        </ul>
+        <p>Такая архитектура обеспечивает масштабируемость, отказоустойчивость и высокую производительность.</p>
+    </div>
+    
+</body>
+</html>

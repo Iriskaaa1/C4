@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Game - Class Diagram</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="../assets/js/mermaid-init.js"></script>
+</head>
+<body>
+    <h1>Art Game - Class Diagram</h1>
+    
+    <div class="description">
+        <h2>Class Diagram - Основные классы системы</h2>
+        <p>Эта диаграмма показывает основные классы системы, их атрибуты, методы и отношения между ними.</p>
+    </div>
+    
+    <div class="mermaid">
+classDiagram
+    class User {
+        +int user_id
+        +string username
+        +string email
+        +string password_hash
+        +datetime registration_date
+        --
+        +User(user_id, username, email, password_hash)
+        +getProfile() Profile
+        +getProgress() List~Progress~
+        +getAchievements() List~Achievement~
+        +authenticate(password) boolean
+    }
+
+    class Profile {
+        +int profile_id
+        +int user_id
+        +string full_name
+        +string avatar_url
+        +int total_points
+        +int current_level
+        --
+        +Profile(profile_id, user_id)
+        +updateAvatar(url) void
+        +addPoints(points) void
+        +levelUp() void
+    }
+
+    class Course {
+        +int course_id
+        +string title
+        +string description
+        +string art_style
+        +string difficulty_level
+        +datetime created_at
+        --
+        +Course(course_id, title, description)
+        +getLessons() List~Lesson~
+        +calculateProgress(user_id) float
+    }
+
+    class Lesson {
+        +int lesson_id
+        +int course_id
+        +string title
+        +string description
+        +int order_number
+        +datetime created_at
+        --
+        +Lesson(lesson_id, course_id, title)
+        +getExercises() List~Exercise~
+        +isCompleted(user_id) boolean
+    }
+
+    class Exercise {
+        +int exercise_id
+        +int lesson_id
+        +string type
+        +string instruction
+        +json content_data
+        +int points_value
+        --
+        +Exercise(exercise_id, lesson_id)
+        +validateSubmission(submission) boolean
+        +getCorrectAnswer() string
+    }
+
+    class Progress {
+        +int progress_id
+        +int user_id
+        +int exercise_id
+        +int attempts
+        +boolean completed
+        +datetime completed_at
+        +int points_earned
+        --
+        +Progress(progress_id, user_id, exercise_id)
+        +markCompleted(points) void
+        +incrementAttempts() void
+    }
+
+    class Achievement {
+        +int achievement_id
+        +string title
+        +string description
+        +int points_required
+        +string badge_url
+        --
+        +Achievement(achievement_id, title)
+        +isUnlocked(total_points) boolean
+        +getBadgeUrl() string
+    }
+
+    %% Relationships
+    User "1" -- "1" Profile : has
+    User "1" -- "0..*" Progress : has
+    User "1" -- "0..*" Achievement : "earns through"
+    Course "1" -- "0..*" Lesson : contains
+    Lesson "1" -- "0..*" Exercise : includes
+    Exercise "1" -- "0..*" Progress : tracked_by
+    User "1" -- "0..*" Course : enrolls_in
+    </div>
+    
+    <div class="navigation-buttons">
+        <a href="../components/user-module.html" class="nav-btn"> Вернуться к компонентам</a>
+        <a href="../index.html" class="nav-btn"> Домашняя страница</a>
+        <a href="../detailed/er-diagram.html" class="nav-btn nav-btn-secondary"> Посмотреть ER-диаграмму</a>
+    </div>
+    
+    <div class="description">
+        <h2>Описание class diagram</h2>
+        <p>Эта диаграмма показывает основные классы системы и их отношения:</p>
+        <ul>
+            <li><strong>User и Profile</strong> - управление пользователями и их профилями</li>
+            <li><strong>Course, Lesson, Exercise</strong> - образовательный контент и структура</li>
+            <li><strong>Progress</strong> - отслеживание прогресса пользователей</li>
+            <li><strong>Achievement</strong> - система достижений и наград</li>
+        </ul>
+        <p>Class diagram помогает разработчикам понимать структуру кода и отношения между классами на этапе проектирования.</p>
+    </div>
+    
+    
+</body>
+</html>

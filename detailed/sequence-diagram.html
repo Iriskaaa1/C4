@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Game - Sequence Diagram</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="../assets/js/mermaid-init.js"></script>
+</head>
+<body>
+    <h1> Art Game - Sequence Diagram: Прохождение упражнения</h1>
+    
+    <div class="description">
+        <h2>Sequence Diagram - Прохождение упражнения</h2>
+        <p>Эта диаграмма показывает последовательность взаимодействий между компонентами при прохождении пользователем упражнения в мобильной игре.</p>
+    </div>
+    
+    <div class="mermaid">
+sequenceDiagram
+    participant User as Пользователь
+    participant Profile as Profile Service
+    participant Exercise as Exercise Service
+    participant Progress as Progress Service
+    participant Achievement as Achievement Service
+
+    User->>Exercise: запросить упражнение (exercise_id)
+    Exercise-->>User: возвращает данные упражнения
+
+    User->>User: выполнить упражнение (отправить ответ)
+
+    User->>Progress: создать/обновить прогресс (user_id, exercise_id, completed=true)
+    Progress->>Progress: сохранить в БД
+    Progress-->>User: подтверждение завершения
+
+    User->>Profile: обновить total_points (+points_earned)
+    Profile-->>User: обновлён профиль
+
+    alt total_points >= achievement.threshold
+        Profile->>Achievement: проверить достижения
+        Achievement-->>Profile: список новых достижений
+        Profile->>User: уведомление о новом достижении
+    end
+    </div>
+    
+    <div class="navigation-buttons">
+        <a href="../components/user-module.html" class="nav-btn">Вернуться к компонентам</a>
+        <a href="../detailed/er-diagram.html" class="nav-btn">Посмотреть ER-диаграмму</a>
+        <a href="../index.html" class="nav-btn nav-btn-secondary">Вернуться на главную</a>
+    </div>
+    
+    <div class="description">
+        <h2>Описание sequence diagram</h2>
+        <p>Эта диаграмма показывает детальную последовательность операций при прохождении пользователем упражнения в образовательной игре:</p>
+        <ol>
+            <li>Пользователь запрашивает упражнение у Exercise Service</li>
+            <li>Пользователь выполняет упражнение и отправляет ответ</li>
+            <li>Progress Service сохраняет прогресс в базу данных</li>
+            <li>Profile Service обновляет общие баллы пользователя</li>
+            <li>Система проверяет, не разблокированы ли новые достижения</li>
+        </ol>
+        <p>Это помогает понять логику работы системы и выявить потенциальные проблемы в последовательности операций.</p>
+    </div>
+    
+    
+</body>
+</html>

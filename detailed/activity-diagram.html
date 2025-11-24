@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Game - Activity Diagram</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="../assets/js/mermaid-init.js"></script>
+</head>
+<body>
+    <h1> Art Game - Activity Diagram: Прохождение уровней</h1>
+    
+    <div class="description">
+        <h2>Activity Diagram - Прохождение уровней</h2>
+        <p>Эта диаграмма показывает процесс прохождения уровней в мобильной образовательной игре в сфере искусства.</p>
+    </div>
+    
+    <div class="mermaid">
+flowchart TD
+    %% Стили
+    classDef startEnd fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:white
+    classDef process fill:#3498db,stroke:#2980b9,stroke-width:2px,color:white
+    classDef decision fill:#f39c12,stroke:#d35400,stroke-width:2px
+    classDef inputOutput fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:white
+    classDef connector fill:#7f8c8d,stroke:#7f8c8d,stroke-width:2px,color:white
+    
+    %% Начало
+    Start([Начало]):::startEnd
+    Login[Авторизация]:::process
+    ShowGames[Отображение списка игр]:::inputOutput
+    SelectGame[Выбор игры]:::inputOutput
+    StartGame[Запуск игры]:::process
+    
+    %% Уровень 1
+    Level1[Прохождение 1 уровня]:::process
+    Level1Decision{Результат?}:::decision
+    Level1Lost[Проиграл]:::inputOutput
+    Level1Decision2{Действие}:::decision
+    Level1Repeat[Повторить уровень]:::process
+    Level1Return[Вернуться к выбору]:::process
+    Level1Win[Отображение окна о победе]:::inputOutput
+    
+    %% Уровень 2
+    Level2[Загрузка 2 уровня]:::process
+    Level2Play[Прохождение 2 уровня]:::process
+    Level2Decision{Результат?}:::decision
+    Level2Lost[Проиграл]:::inputOutput
+    Level2Repeat[Повторить уровень 2]:::process
+    Level2Win[Отображение окна о победе 2 уровня]:::inputOutput
+    
+    %% Конец
+    End([Конец]):::startEnd
+    
+    %% Соединения
+    Start --> Login
+    Login --> ShowGames
+    ShowGames --> SelectGame
+    SelectGame --> StartGame
+    StartGame --> Level1
+    Level1 --> Level1Decision
+    
+    %% Ветка проигрыша уровня 1
+    Level1Decision -->|проиграл| Level1Lost
+    Level1Lost --> Level1Decision2
+    Level1Decision2 -->|повтор| Level1Repeat
+    Level1Decision2 -->|вернуться| Level1Return
+    Level1Repeat --> Level1
+    Level1Return --> SelectGame
+    
+    %% Ветка выигрыша уровня 1
+    Level1Decision -->|выиграл| Level1Win
+    Level1Win --> Level2
+    
+    %% Уровень 2
+    Level2 --> Level2Play
+    Level2Play --> Level2Decision
+    Level2Decision -->|проиграл| Level2Lost
+    Level2Lost --> Level2Repeat
+    Level2Repeat --> Level2Play
+    Level2Decision -->|выиграл| Level2Win
+    Level2Win --> End
+    </div>
+    
+    <div class="navigation-buttons">
+        <a href="../index.html" class="nav-btn"> Вернуться к началу</a>
+        <a href="../detailed/sequence-diagram.html" class="nav-btn"> Посмотреть sequence diagram</a>
+        <a href="../containers/backend.html" class="nav-btn nav-btn-secondary"> Посмотреть архитектуру</a>
+    </div>
+    
+    <div class="description">
+        <h2>Описание диаграммы активности</h2>
+        <p>Эта диаграмма показывает процесс прохождения уровней в мобильной игре. Пользователь проходит авторизацию, выбирает игру, проходит первый уровень с возможностью повтора или возврата, затем переходит ко второму уровню.</p>
+        
+        <h3>Ключевые этапы:</h3>
+        <ol>
+            <li><strong>Авторизация</strong> - пользователь входит в систему</li>
+            <li><strong>Выбор игры</strong> - пользователь выбирает из списка доступных игр</li>
+            <li><strong>Прохождение уровня 1</strong> - основной игровой процесс первого уровня</li>
+            <li><strong>Решение при проигрыше</strong> - пользователь может повторить уровень или вернуться к выбору</li>
+            <li><strong>Прохождение уровня 2</strong> - более сложный второй уровень после победы в первом</li>
+            <li><strong>Завершение</strong> - успешное прохождение второго уровня</li>
+        </ol>
+    </div>
+    
+    
+</body>
+</html>
