@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Game - Контейнеры</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="../assets/js/mermaid-init.js"></script>
+</head>
+<body>
+    <h1> Art Game - Диаграмма контейнеров</h1>
+    <p>Детализация архитектуры системы на уровне контейнеров</p>
+    
+    <div class="description">
+        <h2>Диаграмма контейнеров (Уровень 2)</h2>
+        <p>Этот уровень показывает основные технологии и архитектурные компоненты системы. Отвечает на вопросы: какие технологии используются, из каких контейнеров состоит система, как они взаимодействуют.</p>
+    </div>
+    
+    <div class="mermaid">
+graph TD
+    %% Стили для C4
+    classDef person fill:#99c1f1,stroke:#1a5fb4,stroke-width:2px
+    classDef container fill:#26a269,stroke:#157347,stroke-width:2px,color:white
+    classDef database fill:#e5a50a,stroke:#b57614,stroke-width:2px
+    classDef external fill:#813d9c,stroke:#5e2b70,stroke-width:2px,color:white
+    
+    %% Элементы
+    USER[Пользователь<br/>мобильного приложения]:::person
+    MOBILE_APP[Mobile Application<br/>React Native]:::container
+    API_GATEWAY[API Gateway<br/>Node.js/Express]:::container
+    USER_SERVICE[User Service<br/>Python/Django]:::container
+    COURSE_SERVICE[Course Service<br/>Python/Django]:::container
+    EXERCISE_SERVICE[Exercise Service<br/>Python/Django]:::container
+    DB[(Main Database<br/>PostgreSQL)]:::database
+    MEDIA_STORAGE[Media Storage<br/>AWS S3]:::external
+    AUTH_SERVICE[Auth Service<br/>Auth0]:::external
+    
+    %% Группы
+    subgraph "Frontend"
+        MOBILE_APP
+    end
+    
+    subgraph "Backend Services"
+        API_GATEWAY
+        USER_SERVICE
+        COURSE_SERVICE
+        EXERCISE_SERVICE
+    end
+    
+    subgraph "Data Layer"
+        DB
+        MEDIA_STORAGE
+    end
+    
+    subgraph "External Services"
+        AUTH_SERVICE
+    end
+    
+    %% Связи
+    USER -->|HTTPS/REST| MOBILE_APP
+    MOBILE_APP -->|API Calls| API_GATEWAY
+    API_GATEWAY -->|Routing| USER_SERVICE
+    API_GATEWAY -->|Routing| COURSE_SERVICE
+    API_GATEWAY -->|Routing| EXERCISE_SERVICE
+    USER_SERVICE -->|CRUD Operations| DB
+    COURSE_SERVICE -->|Read Course Data| DB
+    EXERCISE_SERVICE -->|Read/Write Exercise Data| DB
+    EXERCISE_SERVICE -->|Upload/Download Media| MEDIA_STORAGE
+    MOBILE_APP -->|User Authentication| AUTH_SERVICE
+    
+    %% Клики для перехода к компонентам
+    click USER_SERVICE "../components/user-module.html" _self
+    click COURSE_SERVICE "../components/course-module.html" _self
+    click EXERCISE_SERVICE "../components/course-module.html" _self
+    click DB "../detailed/er-diagram.html" _self
+    click MOBILE_APP "../detailed/class-diagram.html" _self
+    </div>
+    
+    <div class="navigation-buttons">
+        <a href="../index.html" class="nav-btn"> Вернуться к контексту</a>
+        <a href="../detailed/sequence-diagram.html" class="nav-btn"> Посмотреть sequence diagram</a>
+        <a href="../detailed/deployment-diagram.html" class="nav-btn"> Посмотреть deployment diagram</a>
+    </div>
+    
+    <div class="description">
+        <h2>Описание уровня контейнеров</h2>
+        <p>Этот уровень показывает основные технологии и архитектурные компоненты системы. Это наиболее полезная и обязательная абстракция при документировании системы.</p>
+        
+        <h3>Ключевые контейнеры:</h3>
+        <ul>
+            <li><strong>Mobile Application</strong> - React Native приложение для iOS и Android</li>
+            <li><strong>API Gateway</strong> - Node.js/Express сервер для маршрутизации запросов</li>
+            <li><strong>Microservices</strong> - Python/Django сервисы для разных доменов</li>
+            <li><strong>PostgreSQL</strong> - основная база данных для хранения всех данных</li>
+            <li><strong>AWS S3</strong> - облачное хранилище для медиа-файлов (картинки, видео)</li>
+        </ul>
+    </div>
+    
+</body>
+</html>
