@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Game - User Module Components</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="../assets/js/mermaid-init.js"></script>
+</head>
+<body>
+    <h1> Art Game - Компоненты User Module</h1>
+    <p>Детализация компонентов модуля управления пользователями</p>
+    
+    <div class="description">
+        <h2>Диаграмма компонентов (Уровень 3)</h2>
+        <p>Этот уровень показывает внутренние компоненты User Module, их ответственности и взаимодействия. Предназначен для разработчиков и архитекторов.</p>
+    </div>
+    
+    <div class="mermaid">
+graph TD
+    %% Стили для C4
+    classDef component fill:#3d3846,stroke:#241f31,stroke-width:2px,color:white
+    classDef database fill:#e5a50a,stroke:#b57614,stroke-width:2px
+    classDef external fill:#813d9c,stroke:#5e2b70,stroke-width:2px,color:white
+    classDef service fill:#26a269,stroke:#157347,stroke-width:2px,color:white
+    
+    %% Элементы
+    AUTH_CONTROLLER[AuthController<br/>Обработка аутентификации]:::component
+    USER_CONTROLLER[UserController<br/>Управление профилями]:::component
+    ACHIEVEMENT_SERVICE[AchievementService<br/>Система достижений]:::service
+    PROFILE_CACHE[ProfileCache<br/>Redis кэширование]:::component
+    USER_DB[(User Database<br/>PostgreSQL tables)]:::database
+    AUTH_PROVIDER[AuthProvider<br/>Auth0 API]:::external
+    
+    %% Группы
+    subgraph "User Module Components"
+        AUTH_CONTROLLER
+        USER_CONTROLLER
+        ACHIEVEMENT_SERVICE
+        PROFILE_CACHE
+    end
+    
+    subgraph "Data Storage"
+        USER_DB
+    end
+    
+    subgraph "External Services"
+        AUTH_PROVIDER
+    end
+    
+    %% Связи
+    AUTH_CONTROLLER -->|Validate tokens| AUTH_PROVIDER
+    AUTH_CONTROLLER -->|Save sessions| USER_DB
+    USER_CONTROLLER -->|Read/Write user data| USER_DB
+    USER_CONTROLLER -->|Cache profile data| PROFILE_CACHE
+    ACHIEVEMENT_SERVICE -->|Check achievement conditions| USER_DB
+    ACHIEVEMENT_SERVICE -->|Update progress| USER_DB
+    PROFILE_CACHE -->|Store/retrieve data| USER_DB
+    
+    %% Клики для перехода к деталям
+    click USER_DB "../detailed/er-diagram.html" _self
+    click ACHIEVEMENT_SERVICE "../detailed/sequence-diagram.html" _self
+    </div>
+    
+    <div class="navigation-buttons">
+        <a href="../containers/backend.html" class="nav-btn"> Вернуться к контейнерам</a>
+        <a href="../detailed/class-diagram.html" class="nav-btn"> Посмотреть class diagram</a>
+        <a href="../detailed/sequence-diagram.html" class="nav-btn"> Посмотреть sequence diagram</a>
+    </div>
+    
+    <div class="description">
+        <h2>Описание уровня компонентов</h2>
+        <p>Этот уровень показывает внутренние компоненты User Module, их ответственности и взаимодействия. Это детальный уровень для разработчиков.</p>
+        
+        <h3>Ключевые компоненты:</h3>
+        <ul>
+            <li><strong>AuthController</strong> - обработка аутентификации и авторизации пользователей</li>
+            <li><strong>UserController</strong> - управление профилями пользователей, CRUD операции</li>
+            <li><strong>AchievementService</strong> - система достижений и наград за прогресс</li>
+            <li><strong>ProfileCache</strong> - кэширование данных профилей для повышения производительности</li>
+            <li><strong>User Database</strong> - таблицы базы данных для хранения пользовательских данных</li>
+        </ul>
+    </div>
+    
+</body>
+</html>
